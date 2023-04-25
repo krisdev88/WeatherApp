@@ -1,9 +1,16 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:weather/weather.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:weather_app/MyHomePage.dart';
 
 import '/PermissionScreen.dart';
 import 'main.dart';
+
+final weatherApiKey = dotenv.env['WEATHER_API_KEY'];
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -15,30 +22,6 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
-    Future.delayed(
-        const Duration(seconds: 2),
-        () => {
-              if (havePermission())
-                {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const PermissionScreen(),
-                    ),
-                  )
-                }
-              else
-                {
-                  //todo load data
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const MyHomePage(),
-                    ),
-                  )
-                }
-            });
-
     return Scaffold(
       body: Stack(
         fit: StackFit.expand,
@@ -110,7 +93,29 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
 
-  bool havePermission() {
-    return true;
+  @override
+  void initState() {
+    super.initState();
+    if (permissionDenied()) {
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const PermissionScreen()));
+    } else {
+      // SchedulerBinding.instance.addPersistentFrameCallback((timeStamp) {
+      executeOnceAfterBuild();
+      // });
+    }
+  }
+
+  bool permissionDenied() {
+    return false;
+  }
+
+  Future executeOnceAfterBuild() async {
+    WeatherFactory wf =
+        WeatherFactory(weatherApiKey.toString(), language: Language.POLISH);
+    Weather w = await wf.currentWeatherByCityName('Warszawa');
+    log(w.toJson().toString());
+    Navigator.push((context),
+        MaterialPageRoute(builder: (context) => MyHomePage(weather: w)));
   }
 }
