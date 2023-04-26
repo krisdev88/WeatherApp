@@ -1,10 +1,11 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:weather/weather.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:http/http.dart' as http;
+import 'package:weather/weather.dart';
 import 'package:weather_app/MyHomePage.dart';
 
 import '/PermissionScreen.dart';
@@ -115,7 +116,52 @@ class _SplashScreenState extends State<SplashScreen> {
         WeatherFactory(weatherApiKey.toString(), language: Language.POLISH);
     Weather w = await wf.currentWeatherByCityName('Warszawa');
     log(w.toJson().toString());
+
+    var lat = 51.761090;
+    var lon = 19.486489;
+    var keyword = 'geo:$lat;$lon';
+    String _endpoint = 'https://api.waqi.info/feed/';
+    var key = dotenv.env['AIR_API_KEY'];
+    String url = '$_endpoint$keyword/?token=$key';
+
+    http.Response response = await http.get(Uri.parse(url));
+    log(response.body.toString());
+
+    Map<String, dynamic> jsonBody = json.decode(response.body);
+    AirQuality aq = AirQuality(jsonBody);
     Navigator.push((context),
         MaterialPageRoute(builder: (context) => MyHomePage(weather: w)));
+  }
+}
+
+class AirQuality {
+  bool isGood = false;
+  bool isBad = false;
+  String quality = '';
+  String advice = '';
+  int aqi = 0;
+  int pm25 = 0;
+  int pm10 = 0;
+  String station = '';
+
+  AirQuality(Map<String, dynamic> jsonBody) {
+    aqi = int.tryParse(jsonBody['data']['aqi'].toString()) ?? -1;
+    pm25 = int.tryParse(jsonBody['data']['iaqi']['pm25']['v'].toString()) ?? -1;
+    pm10 = int.tryParse(jsonBody['data']['iaqi']['pm10']['v'].toString()) ?? -1;
+    station = jsonBody['data']['city']['name'].toString();
+    setupLevel(aqi);
+  }
+
+  void setupLevel(int aqi) {
+    if (aqi <= 100) {
+      quality = 'Bardzo dobra';
+      advice = 'Skorzystaj z dobrego poweitrza i wyjdź na spacer';
+    } else if (aqi <= 150) {
+      quality = 'Nie za dobra';
+      advice = 'Jeżeli możesz zostań w domu, załatwiaj sprawy online';
+    } else {
+      quality = 'Bardzo zła!';
+      advice = 'Zdecydowanie zostań w domu i załatwiaj sprawy online!';
+    }
   }
 }

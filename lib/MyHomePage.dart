@@ -42,11 +42,17 @@ class _MyHomePageState extends State<MyHomePage> {
         iconSize: 35,
         currentIndex: currentIndex,
         onTap: (index) => setState(() => currentIndex = index),
-        items: const [
+        items: [
           BottomNavigationBarItem(
-              icon: Icon(Icons.masks_outlined), label: 'Powietrze'),
+            icon: Image.asset('icons/house.png'),
+            label: 'Powietrze',
+            activeIcon: Image.asset('icons/house-checked.png'),
+          ),
           BottomNavigationBarItem(
-              icon: Icon(Icons.cloud_outlined), label: 'Pogoda'),
+            icon: Image.asset('icons/cloud.png'),
+            label: 'Pogoda',
+            activeIcon: Image.asset('icons/cloud-checked.png'),
+          ),
         ],
       ),
     );
