@@ -1,26 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:weather/weather.dart';
+import 'package:weather_app/SplashScreen.dart';
 
 import '/AirScreen.dart';
 import '/WeatherScreen.dart';
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, this.weather});
+  const MyHomePage({super.key, this.weather, this.air});
 
   final Weather? weather;
+  final AirQuality? air;
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  var currentIndex = 1;
+  var currentIndex = 0;
   var screens;
 
   @override
   void initState() {
     screens = <Widget>[
-      const AirScreen(),
+      AirScreen(air: widget.air),
       WeatherScreen(weather: widget.weather),
     ];
     super.initState();

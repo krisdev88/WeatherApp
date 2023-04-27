@@ -129,8 +129,11 @@ class _SplashScreenState extends State<SplashScreen> {
 
     Map<String, dynamic> jsonBody = json.decode(response.body);
     AirQuality aq = AirQuality(jsonBody);
-    Navigator.push((context),
-        MaterialPageRoute(builder: (context) => MyHomePage(weather: w)));
+
+    Navigator.push(
+        (context),
+        MaterialPageRoute(
+            builder: (context) => MyHomePage(weather: w, air: aq)));
   }
 }
 
@@ -146,8 +149,8 @@ class AirQuality {
 
   AirQuality(Map<String, dynamic> jsonBody) {
     aqi = int.tryParse(jsonBody['data']['aqi'].toString()) ?? -1;
-    pm25 = int.tryParse(jsonBody['data']['iaqi']['pm25']['v'].toString()) ?? -1;
-    pm10 = int.tryParse(jsonBody['data']['iaqi']['pm10']['v'].toString()) ?? -1;
+    pm25 = int.tryParse(jsonBody['data']['iaqi']['pm25'].toString()) ?? -1;
+    pm10 = int.tryParse(jsonBody['data']['iaqi']['pm10'].toString()) ?? -1;
     station = jsonBody['data']['city']['name'].toString();
     setupLevel(aqi);
   }
@@ -156,9 +159,11 @@ class AirQuality {
     if (aqi <= 100) {
       quality = 'Bardzo dobra';
       advice = 'Skorzystaj z dobrego poweitrza i wyjdź na spacer';
+      isGood = true;
     } else if (aqi <= 150) {
       quality = 'Nie za dobra';
       advice = 'Jeżeli możesz zostań w domu, załatwiaj sprawy online';
+      isBad = true;
     } else {
       quality = 'Bardzo zła!';
       advice = 'Zdecydowanie zostań w domu i załatwiaj sprawy online!';
