@@ -1,14 +1,15 @@
-import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:http/http.dart' as http;
 import 'package:weather/weather.dart';
-import 'package:weather_app/MyHomePage.dart';
+import 'package:weather_app/ApiService.dart';
 
-import '/PermissionScreen.dart';
+import 'MyHomePage.dart';
+import 'PermissionScreen.dart';
 import 'main.dart';
 
 final weatherApiKey = dotenv.env['WEATHER_API_KEY'];
@@ -97,43 +98,50 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    if (permissionDenied()) {
+    checkPermission();
+  }
+
+  Future checkPermission() async {
+    LocationPermission permission = await Geolocator.checkPermission();
+    if ((permission == LocationPermission.denied ||
+            permission == LocationPermission.deniedForever) &&
+        context.mounted) {
       Navigator.push(context,
           MaterialPageRoute(builder: (context) => const PermissionScreen()));
     } else {
-      // SchedulerBinding.instance.addPersistentFrameCallback((timeStamp) {
-      executeOnceAfterBuild();
-      // });
+      SchedulerBinding.instance
+          .addPostFrameCallback((_) => executeOnceAfterBuild());
     }
   }
 
-  bool permissionDenied() {
-    return false;
+  Future executeOnceAfterBuild() async {
+    Geolocator.getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.lowest,
+      forceAndroidLocationManager: true,
+      timeLimit: const Duration(seconds: 15),
+    ).then((value) => loadLocationData(value)).onError((error, stackTrace) {
+      return Geolocator.getLastKnownPosition(forceAndroidLocationManager: true);
+    }).then((value) => loadLocationData(value));
   }
 
-  Future executeOnceAfterBuild() async {
-    WeatherFactory wf =
+  loadLocationData(Position value) async {
+    final double lat = value.latitude;
+    final double lon = value.longitude;
+    log('$lat x $lon');
+
+    WeatherFactory weatherFactory =
         WeatherFactory(weatherApiKey.toString(), language: Language.POLISH);
-    Weather w = await wf.currentWeatherByCityName('Warszawa');
-    log(w.toJson().toString());
+    Weather weather = await weatherFactory.currentWeatherByLocation(lat, lon);
+    log(weather.toJson().toString());
 
-    var lat = 51.761090;
-    var lon = 19.486489;
-    var keyword = 'geo:$lat;$lon';
-    String _endpoint = 'https://api.waqi.info/feed/';
-    var key = dotenv.env['AIR_API_KEY'];
-    String url = '$_endpoint$keyword/?token=$key';
-
-    http.Response response = await http.get(Uri.parse(url));
-    log(response.body.toString());
-
-    Map<String, dynamic> jsonBody = json.decode(response.body);
+    final String keyword = 'geo:$lat;$lon';
+    final jsonBody = await ApiService().getAirQuality(keyword);
     AirQuality aq = AirQuality(jsonBody);
 
     Navigator.push(
         (context),
         MaterialPageRoute(
-            builder: (context) => MyHomePage(weather: w, air: aq)));
+            builder: (context) => MyHomePage(weather: weather, air: aq)));
   }
 }
 

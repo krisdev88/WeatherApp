@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:weather_app/SplashScreen.dart';
 
-import 'MyHomePage.dart';
 import 'main.dart';
 
 class PermissionScreen extends StatefulWidget {
@@ -12,6 +13,20 @@ class PermissionScreen extends StatefulWidget {
 }
 
 class _PermissionScreenState extends State<PermissionScreen> {
+  Future<void> navigateAfterPermissionScreen() async {
+    LocationPermission permission = await Geolocator.requestPermission();
+    if ((permission == LocationPermission.always ||
+            permission == LocationPermission.whileInUse) &&
+        context.mounted) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const SplashScreen(),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,15 +93,7 @@ class _PermissionScreenState extends State<PermissionScreen> {
                       const EdgeInsets.only(top: 12.0, bottom: 12.0),
                     ),
                   ),
-                  onPressed: () {
-                    //todo ask for permissions
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const MyHomePage(),
-                      ),
-                    );
-                  },
+                  onPressed: navigateAfterPermissionScreen,
                   child: const Text(
                     'Zgoda!',
                     style: TextStyle(
