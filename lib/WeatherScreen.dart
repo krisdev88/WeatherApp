@@ -177,7 +177,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
   }
 
   String getIconByMood(Weather? weather) {
-    var main = weather!.weatherMain;
+    final String? main = weather!.weatherMain;
     if (main == 'Clouds' || main == 'Drizzle' || main == 'Snow') {
       return 'weather-rain';
     } else if (main == 'Thunderstorm') {
@@ -195,7 +195,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
   }
 
   LinearGradient getGradientByMood(Weather? weather) {
-    var main = weather!.weatherMain;
+    final String? main = weather!.weatherMain;
     if (main == 'Clouds' || main == 'Drizzle' || main == 'Snow') {
       return const LinearGradient(
         begin: Alignment.bottomLeft,

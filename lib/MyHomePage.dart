@@ -16,8 +16,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  var currentIndex = 0;
-  var screens;
+  int currentIndex = 0;
+  late List<Widget> screens;
 
   @override
   void initState() {

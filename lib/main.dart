@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-
-import '/SplashScreen.dart';
+import 'package:weather_app/PermissionScreen.dart';
 
 Future main() async {
   await dotenv.load(fileName: ".env");
@@ -18,7 +17,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const SplashScreen(),
+      home: const PermissionScreen(),
     );
   }
 }
