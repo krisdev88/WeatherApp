@@ -25,7 +25,7 @@ practice" by Arkadiusz Wrzos
 3. Then get your API keys
 4. Clone the repo
    ```sh
-   git clone https://github.com/krisdev88/WeatherApp
+   git clone https://github.com/krisdev88/WeatherApp.git
    ```
 5. Install all the packages by typing
    ```sh
