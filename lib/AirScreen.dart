@@ -38,10 +38,10 @@ class _AirScreenState extends State<AirScreen> {
                   textAlign: TextAlign.center,
                   style: GoogleFonts.lato(
                     textStyle: TextStyle(
-                      fontSize: 14.0,
+                      fontSize: 15.0,
                       height: 1.2,
                       color: getBackgraundTextColor(widget.air),
-                      fontWeight: FontWeight.w300,
+                      fontWeight: FontWeight.w400,
                     ),
                   ),
                 ),
@@ -123,7 +123,7 @@ class _AirScreenState extends State<AirScreen> {
                                   fontSize: 14.0,
                                   height: 1.2,
                                   color: getBackgraundTextColor(widget.air),
-                                  fontWeight: FontWeight.w300,
+                                  fontWeight: FontWeight.w400,
                                 ),
                               ),
                             ),
@@ -161,7 +161,7 @@ class _AirScreenState extends State<AirScreen> {
                                   fontSize: 14.0,
                                   height: 1.2,
                                   color: getBackgraundTextColor(widget.air),
-                                  fontWeight: FontWeight.w300,
+                                  fontWeight: FontWeight.w400,
                                 ),
                               ),
                             ),
@@ -192,10 +192,10 @@ class _AirScreenState extends State<AirScreen> {
                   textAlign: TextAlign.center,
                   style: GoogleFonts.lato(
                     textStyle: TextStyle(
-                      fontSize: 12.0,
+                      fontSize: 13.0,
                       height: 1.2,
                       color: getBackgraundTextColor(widget.air),
-                      fontWeight: FontWeight.w300,
+                      fontWeight: FontWeight.w400,
                     ),
                   ),
                 ),
@@ -207,7 +207,7 @@ class _AirScreenState extends State<AirScreen> {
                   textAlign: TextAlign.center,
                   style: GoogleFonts.lato(
                     textStyle: TextStyle(
-                      fontSize: 14.0,
+                      fontSize: 15.0,
                       height: 1.2,
                       color: getBackgraundTextColor(widget.air),
                       fontWeight: FontWeight.w400,
@@ -299,7 +299,7 @@ class _AirScreenState extends State<AirScreen> {
                                     fontSize: 12.0,
                                     height: 1.2,
                                     color: Colors.black,
-                                    fontWeight: FontWeight.w300,
+                                    fontWeight: FontWeight.w400,
                                   ),
                                 ),
                               )
@@ -350,7 +350,7 @@ class _AirScreenState extends State<AirScreen> {
                         'Indeks CAQI (ang. Common Air Quality Index) pozwala przedstawić sytuację w Europiie w porównywalny i łatwy do zrozumienia sposób. Wartość indeksu jest prezentowana w postaci jednej liczby. Skala ma rozpietość od 0 do wartości powyżej 100 i powyżej bardzo zanieczyszone. Im wyższa wartość wskażnika, tym większe ryzyko złego wpływu na zdrowie i sampoczucie.',
                         style: GoogleFonts.lato(
                           textStyle: const TextStyle(
-                            fontSize: 12.0,
+                            fontSize: 13.0,
                             height: 1.2,
                             color: Colors.black,
                             fontWeight: FontWeight.w300,
@@ -378,7 +378,7 @@ class _AirScreenState extends State<AirScreen> {
                         'Pyły zawieszone to mieszanina bardzo małych cząstek. PM10 to wszystkie pyły mniejsze niz 10μm, natomiast w przypadku  PM2,5 nie większe niż 2,5μm. Zanieczyszczenia pyłowe mają zdolność do adsorpcji swojej powierzchni innych, bardzo szkodliwych związków chemicznych: dioksyn, furanów, metali ciężkich, czy benzo(a)pirenu - najbardziej toksycznego skłądnika smogu.',
                         style: GoogleFonts.lato(
                           textStyle: const TextStyle(
-                            fontSize: 12.0,
+                            fontSize: 13.0,
                             height: 1.2,
                             color: Colors.black,
                             fontWeight: FontWeight.w300,

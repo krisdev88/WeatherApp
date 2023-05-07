@@ -118,7 +118,7 @@ class _SplashScreenState extends State<SplashScreen> {
     Geolocator.getCurrentPosition(
       desiredAccuracy: LocationAccuracy.lowest,
       forceAndroidLocationManager: true,
-      timeLimit: const Duration(seconds: 15),
+      timeLimit: const Duration(seconds: 5),
     ).then((value) => loadLocationData(value)).onError((error, stackTrace) {
       return Geolocator.getLastKnownPosition(forceAndroidLocationManager: true);
     }).then((value) => loadLocationData(value));
